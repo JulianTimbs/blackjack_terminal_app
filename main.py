@@ -18,7 +18,7 @@ card_value = {
     '1': 1
 }
 
-user_hand = []
+user_hand = [10, 10, 10]
 dealer_hand = []
 
 def deal_card(hand):
@@ -29,3 +29,14 @@ def deal_card(hand):
         dealer_hand.append(card)
     return list
 
+def check_bust(list):
+    i = 0
+    total = 0
+    for i in list:
+        total += i
+    if total > 21:
+        return "Bust"
+    else:
+        return "Under 21"
+    
+print(check_bust(user_hand))
