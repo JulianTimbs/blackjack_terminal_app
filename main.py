@@ -29,7 +29,7 @@ def deal_card(hand):
     if hand == user_hand:
         user_hand.append(card)
     if (hand == dealer_hand):
-        if check_total(dealer_hand) == True:
+        if check_total(dealer_hand) < 17:
             dealer_hand.append(card)
     return list
 
@@ -47,15 +47,11 @@ def check_total(hand):
     if hand == user_hand:
         for i in user_hand:
             total += i
-        if total == 21:
-            return True
+        return total
     if hand == dealer_hand:
         for i in dealer_hand:
             total += i
-        if total >= 17:
-            return False
-        else:
-            return True
+        return total
 
 def play_game():
     print("The dealer is dealing your cards...")
@@ -81,14 +77,16 @@ def play_game():
         if check_bust(user_hand):
             print("Bust!")
             return
-        if check_bust(user_hand) != "bust" or user_input == "s":
+        if (check_bust(user_hand) != "bust" and e == False) or (user_input == "s" and e == False):
             print("The dealer is dealing their next card...")
             deal_card(dealer_hand)
             print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")
         check_bust(dealer_hand)
-        if check_bust(dealer_hand) or check_total(user_hand):
+        if check_bust(dealer_hand) or check_total(user_hand) == 21:
             print("You win!")
             return
+        if check_total(dealer_hand) >= 17 and check_total(dealer_hand) < check_total(user_hand):
+            print("You win!")
         if user_input == "q":
             exit()
 
