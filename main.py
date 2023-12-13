@@ -29,6 +29,8 @@ dealer_hand = []
 
 def deal_card(hand):
     card = random.choice(list(card_value.values()))
+    if card == 11 and total_value(hand) >= 11:
+        card = 1
     if hand == user_hand:
         user_hand.append(card)
     if (hand == dealer_hand):
