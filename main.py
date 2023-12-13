@@ -1,11 +1,6 @@
 import sys
 import random
-
-class InvalidInputError(Exception):
-    pass
-
-class KeyboardInterrupt(Exception):
-    pass
+from errors import InvalidInputError, KeyboardInterrupt
 
 card_value = {
     'Ace': 11,
@@ -63,6 +58,8 @@ def play_game():
             user_choice = input("Press 'h' to hit or 's' to stand: ").lower()
             if user_choice not in ('h', 's', '\\quit', 'play'):
                 raise InvalidInputError
+            if user_choice == '\\quit':
+                raise KeyboardInterrupt
             if user_choice == "h":
                 deal_card(user_hand)
                 print(f"The dealer's hand: {dealer_hand}")
@@ -82,6 +79,9 @@ def play_game():
                 return
             if total_value(dealer_hand) == 21:
                 print("The dealer won...")
+                return
+            if total_value(user_hand) == 17 and total_value(dealer_hand) == 17:
+                print("It's a push!")
                 return
         except InvalidInputError:
             print("Invalid input")
