@@ -4,6 +4,9 @@ import random
 class InvalidInputError(Exception):
     pass
 
+class KeyboardInterrupt(Exception):
+    pass
+
 card_value = {
     'Ace': 11,
     'King': 10,
@@ -29,19 +32,11 @@ def deal_card(hand):
     if hand == user_hand:
         user_hand.append(card)
     if (hand == dealer_hand):
-        if check_total(dealer_hand) < 17:
+        if total_value(dealer_hand) < 17:
             dealer_hand.append(card)
     return list
 
-def check_bust(list):
-    i = 0
-    total = 0
-    for i in list:
-        total += i
-    if total > 21:
-        return True
-
-def check_total(hand):
+def total_value(hand):
     i = 0
     total = 0
     if hand == user_hand:
@@ -60,40 +55,58 @@ def play_game():
     print(f"Your hand is: {user_hand}")
     print("The dealer is dealer is dealing their card...")
     deal_card(dealer_hand)
-    print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")
-    
-    while True:    
-        try:
-            user_input = input("Press 'h' to hit or 's' to stand: ").lower()
-            if user_input not in ('h', 's', 'q'):
-                raise InvalidInputError("Invalid input")
-        except InvalidInputError as e:
-            print(e)
-        if user_input == "h":
-            deal_card(user_hand)
-            print(f"The dealer's hand: {dealer_hand}")
-            print(f"Your hand: {user_hand}")
-        check_bust(user_hand)
-        if check_bust(user_hand):
-            print("Bust!")
-            return
-        if (check_bust(user_hand) != "bust" and e == False) or (user_input == "s" and e == False):
-            print("The dealer is dealing their next card...")
-            deal_card(dealer_hand)
-            print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")
-        check_bust(dealer_hand)
-        if check_bust(dealer_hand) or check_total(user_hand) == 21:
-            print("You win!")
-            return
-        if check_total(dealer_hand) >= 17 and check_total(dealer_hand) < check_total(user_hand):
-            print("You win!")
-        if user_input == "q":
-            exit()
+    print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}") 
+    while True:
+        try:  
+            user_choice = input("Press 'h' to hit or 's' to stand: ").lower()
+            if user_choice not in ('h', 's', '\\quit', 'play'):
+                raise InvalidInputError
+            if user_choice == "h":
+                deal_card(user_hand)
+                print(f"The dealer's hand: {dealer_hand}")
+                print(f"Your hand: {user_hand}")
+            if total_value(user_hand) > 21:
+                print("Bust!")
+                return
+            if total_value(user_hand) < 21 or (user_choice == "s" and InvalidInputError == False):
+                print("The dealer is dealing their next card...")
+                deal_card(dealer_hand)
+                print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")
+            if total_value(dealer_hand) > 21 or total_value(user_hand) == 21:
+                print("You win!")
+                return
+            if total_value(dealer_hand) >= 17 and total_value(dealer_hand) < total_value(user_hand):
+                print("You win!")
+                return
+            if total_value(dealer_hand) == 21:
+                print("The dealer won...")
+                return
+        except InvalidInputError:
+            print("Invalid input")
 
 def help():
     pass
 
-def main():
-    pass
+def get_input(prompt):
+    user_input = input(prompt).lower()
+    if user_input == "\\quit":
+        raise KeyboardInterrupt
 
-play_game()
+def start_prompt(greeting, text_insert):
+    welcome = get_input(f"{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game: ")
+
+def main():
+    greeting = "Welcome"
+    text_insert = "a"
+    try:
+        while True:
+            start_prompt(greeting, text_insert)
+            greeting = "Hi again"
+            text_insert = "another"
+            play_game()
+            user_hand.clear()
+            dealer_hand.clear()
+    except KeyboardInterrupt:
+        print("Thanks for playing, see you next time!")
+
+main()
