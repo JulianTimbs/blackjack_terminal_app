@@ -29,10 +29,16 @@ def deal_card(hand):
     if card == 11 and total_value(hand) >= 11:
         card = 1
     if hand == user_hand:
-        user_hand.append(card)
+        if check_card_available(card):
+            user_hand.append(card)
+        else:
+            deal_card(user_hand)
     if hand == dealer_hand:
         if total_value(dealer_hand) < 17:
-            dealer_hand.append(card)
+            if check_card_available:
+                dealer_hand.append(card)
+            else:
+                deal_card(dealer_hand)
     return hand
 
 def total_value(hand):
@@ -46,6 +52,19 @@ def total_value(hand):
         for i in dealer_hand:
             total += i
         return total
+
+def check_card_available(card):
+    total = 0
+    for value in user_hand:
+        if value == card:
+            total += 1
+    for value in dealer_hand:
+        if value == card:
+            total += 1
+    if total < 4:
+         return True
+    else:
+         return False
     
 def check_win(user_hand, dealer_hand):
     if total_value(user_hand) == 21 and len(user_hand) == 2:
@@ -57,26 +76,28 @@ def check_win(user_hand, dealer_hand):
     elif total_value(dealer_hand) > 21:
         print("You win!")
         return True
-    elif (total_value(dealer_hand) >= 17 and (total_value(dealer_hand) < total_value(user_hand) and total_value(user_hand) < 21)):
+    elif (total_value(dealer_hand) >= 17) and (total_value(user_hand) > total_value(dealer_hand)):
         print("You win!")
         return True
     
 
 def check_loss(user_hand, dealer_hand):
     if total_value(dealer_hand) == 21:
-                print("The dealer won...")
-                return True
+        print("The dealer won...")
+        return True
     if total_value(user_hand) > 21:
-                print("Bust!")
-                return True
-    if total_value(dealer_hand) > total_value(user_hand):
-         print("The dealer won...")
-         return True
+        print("Bust!")
+        return True
+    if (total_value(dealer_hand) >= 17 and total_value(dealer_hand) < 21):
+        if total_value(dealer_hand) > total_value(user_hand):
+            print("The dealer won...")
+            return True
 
 def check_tie(user_hand, dealer_hand):
-    if total_value(user_hand) == total_value(dealer_hand):
-                print("It's a push!")
-                return True
+    if total_value(dealer_hand) >= 17:
+        if total_value(user_hand) == total_value(dealer_hand):
+            print("It's a push!")
+            return True
 
 def play_game():
     print("The dealer is dealing the cards...")
@@ -105,12 +126,14 @@ def play_game():
                 print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")      
         except InvalidInputError:
             print("Invalid input")
-        if check_win(user_hand, dealer_hand):
-             return
+          
         if check_loss(user_hand, dealer_hand):
              return
         if check_tie(user_hand, dealer_hand):
              return
+        if check_win(user_hand, dealer_hand):
+             return  
+        
 
 
 def help():
