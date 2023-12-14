@@ -101,11 +101,13 @@ def check_tie(user_hand, dealer_hand):
 
 def play_game():
     print("The dealer is dealing the cards...")
-    time.sleep(0.5)
+    time.sleep(0.75)
     while len(user_hand) < 2:
         deal_card(user_hand)
     deal_card(dealer_hand)
-    print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")
+    print(f"The dealer's hand: {dealer_hand}")
+    time.sleep(0.75)
+    print(f"Your hand: {user_hand}")
     if check_win(user_hand, dealer_hand):
              return
     while True:
@@ -118,12 +120,17 @@ def play_game():
             if user_choice == "h":
                 deal_card(user_hand)
                 deal_card(dealer_hand)
-                time.sleep(0.5)
+                print("The dealer is dealing the cards...")
+                time.sleep(0.75)
                 print(f"The dealer's hand: {dealer_hand}")
+                time.sleep(0.75)
                 print(f"Your hand: {user_hand}")
             if user_choice == "s":
                 deal_card(dealer_hand)
-                print(f"The dealer's hand: {dealer_hand}\nYour hand: {user_hand}")      
+                time.sleep(0.75)
+                print(f"The dealer's hand: {dealer_hand}")
+                time.sleep(0.75)
+                print(f"Your hand: {user_hand}")      
         except InvalidInputError:
             print("Invalid input")
           
