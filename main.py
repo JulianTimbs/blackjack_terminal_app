@@ -172,6 +172,9 @@ def play_game():
     time.sleep(0.75)
     print(f"Your hand: {user_hand}")
     if check_win(user_hand, dealer_hand):
+             running_total = running_total + current_bet * 2.5
+             update_running_total(running_total)
+             print(f"Your running total is: {running_total}")
              return
     while True:
         try:
@@ -242,6 +245,6 @@ def main():
         print("Thanks for playing, see you next time!")
     except InvalidInputError:
         print("Invalid input")
-        main() # So the program doesn't quit
+        main()
 
 main()
