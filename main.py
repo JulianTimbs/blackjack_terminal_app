@@ -113,6 +113,23 @@ def make_bet(new_bet):
         csv_writer.writeheader()
         for row in bets:
             csv_writer.writerow(row)
+    return
+
+def get_bet():
+    while True:
+        try:
+            user_bet = input("Input your bet amount: ")
+            if user_bet == "\\quit":
+                raise KeyboardInterrupt
+            user_bet = int(user_bet) # So user can still quit during bet prompt
+            if user_bet < 0:
+                raise ValueError        
+            break
+        except ValueError:
+            print("Bet must be a positive number")
+        except InvalidInputError:
+            print("Invalid input")
+    return user_bet       
 
 def update_running_total(running_total):
     bets = []
@@ -161,7 +178,7 @@ def play_game():
     current_bet = 0
     running_total = int(get_running_total())
     print(f"Your running total is: {running_total}")
-    current_bet = int(input("Input your bet amount: "))
+    current_bet = get_bet()
     make_bet(current_bet)
     print("The dealer is dealing the cards...")
     time.sleep(0.75)
@@ -172,10 +189,10 @@ def play_game():
     time.sleep(0.75)
     print(f"Your hand: {user_hand}")
     if check_win(user_hand, dealer_hand):
-             running_total = running_total + current_bet * 2.5
-             update_running_total(running_total)
-             print(f"Your running total is: {running_total}")
-             return
+        running_total = running_total + current_bet * 2.5
+        update_running_total(running_total)
+        print(f"Your running total is: {running_total}")
+        return
     while True:
         try:
             print(f"Your current bet is: {current_bet}")  
@@ -232,6 +249,7 @@ def main():
     greeting = "Welcome"
     text_insert = "a"
     running_total = 0 
+    update_running_total(running_total)
     while True:
         try:
             get_running_total()
