@@ -98,23 +98,6 @@ def check_tie(user_hand, dealer_hand):
             print("It's a push!")
             return True
 
-def make_bet(new_bet):
-    bets = []
-    with open('bets.csv', mode='r', newline='') as f:
-        csv_reader = csv.DictReader(f)
-        for row in csv_reader:
-            bets.append(row)   
-    for row in bets:
-        row['Current Bet'] = new_bet
-        break
-    with open('bets.csv', mode='w', newline='') as f:
-        fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
-        csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
-        csv_writer.writeheader()
-        for row in bets:
-            csv_writer.writerow(row)
-    return
-
 def get_bet():
     while True:
         try:
@@ -129,23 +112,45 @@ def get_bet():
             print("Bet must be a positive number")
         except InvalidInputError:
             print("Invalid input")
-    return user_bet       
+    return user_bet      
 
-def update_running_total(running_total):
+def make_bet(new_bet):
     bets = []
     with open('bets.csv', mode='r', newline='') as f:
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
             bets.append(row)   
     for row in bets:
-        row['Running Total'] = running_total
+        row['Current Bet'] = new_bet
         break
     with open('bets.csv', mode='w', newline='') as f:
-        fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
+        fieldnames = ['Current Bet', 'Running Total', 'Highest Winnings']
         csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
         csv_writer.writeheader()
         for row in bets:
             csv_writer.writerow(row)
+
+def update_running_total(running_total):
+    bets = []
+    try:
+        with open('bets.csv', mode='r', newline='') as f:
+            csv_reader = csv.DictReader(f)
+            for row in csv_reader:
+                bets.append(row)   
+        for row in bets:
+            row['Running Total'] = running_total
+            break
+        with open('bets.csv', mode='w', newline='') as f:
+            fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
+            csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
+            csv_writer.writeheader()
+            for row in bets:
+                csv_writer.writerow(row)
+    except FileNotFoundError:
+        with open('bets.csv', mode='w', newline='') as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow(['Current Bet', 'Running Total', 'Highest Winnings']) 
+            csv_writer.writerow([0, 0, 0])
 
 def get_running_total():
     bets = []
