@@ -163,6 +163,32 @@ def get_running_total():
         running_total = row['Running Total']
         return running_total
 
+def get_highest_winnings():
+    bets = []
+    with open('bets.csv', mode='r', newline='') as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            bets.append(row)   
+    for row in bets:
+        highest_winnings = row['Highest Winnings']
+        return highest_winnings
+
+def update_highest_winnings(highest_winnings):
+     bets = []
+     with open('bets.csv', mode='r', newline='') as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            bets.append(row)   
+        for row in bets:
+            row['Highest Winnings'] = highest_winnings
+            break
+     with open('bets.csv', mode='w', newline='') as f:
+        fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
+        csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for row in bets:
+            csv_writer.writerow(row)
+
 def hit():
     deal_card(user_hand)
     deal_card(dealer_hand)
@@ -265,8 +291,17 @@ def main():
             user_hand.clear()
             dealer_hand.clear()
         except KeyboardInterrupt:
-            print("Thanks for playing, see you next time!")
-            break
+            highest_winnings = int(get_highest_winnings())
+            running_total = int(get_running_total())
+            if running_total > highest_winnings:
+                update_highest_winnings(running_total)
+                print(f"New highest win! {running_total}")
+                print("Thanks for playing, see you next time!")
+                break
+            else:
+                print(f"Your highest winnings is: {highest_winnings}")
+                print("Thanks for playing, see you next time!")
+                break
         except InvalidInputError:
             print("Invalid input")
 
