@@ -23,7 +23,6 @@ card_value = {
 
 user_hand = []
 dealer_hand = []
-current_bet = 0
 
 def deal_card(hand):
     card = random.choice(list(card_value.values()))
@@ -105,24 +104,30 @@ def make_bet(new_bet):
     with open('bets.csv', mode='r', newline='') as f:
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
-            bets.append(row)
-    
+            bets.append(row)   
     for row in bets:
         row['Current Bet'] = new_bet
         break
-
     with open('bets.csv', mode='w', newline='') as f:
         fieldnames = ['Current Bet', 'Highest Winnings']
         csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
-
         csv_writer.writeheader()
         for row in bets:
             csv_writer.writerow(row)
 
+def hit():
+    deal_card(user_hand)
+    deal_card(dealer_hand)
+    print("The dealer is dealing the cards...")
+    time.sleep(0.75)
+    print(f"The dealer's hand: {dealer_hand}")
+    time.sleep(0.75)
+    print(f"Your hand: {user_hand}")
+
 def play_game():
-    current_bet = input("Input your bet amount: ")
+    current_bet = 0
+    current_bet = int(input("Input your bet amount: "))
     make_bet(current_bet)
-    print(f"Your current bet is: {current_bet}")
     print("The dealer is dealing the cards...")
     time.sleep(0.75)
     while len(user_hand) < 2:
@@ -136,25 +141,22 @@ def play_game():
     while True:
         try:
             print(f"Your current bet is: {current_bet}")  
-            user_choice = input("Enter 'h' to hit or 's' to stand: ").lower()
-            if user_choice not in ("h", "s", "\\quit"):
+            user_choice = input("Enter 'h' to hit or 's' to stand or 'd' to double down: ").lower()
+            if user_choice not in ("h", "s", "d", "\\quit"):
                 raise InvalidInputError
             if user_choice == '\\quit':
                 raise KeyboardInterrupt
             if user_choice == "h":
-                deal_card(user_hand)
-                deal_card(dealer_hand)
-                print("The dealer is dealing the cards...")
-                time.sleep(0.75)
-                print(f"The dealer's hand: {dealer_hand}")
-                time.sleep(0.75)
-                print(f"Your hand: {user_hand}")
+                hit()
             if user_choice == "s":
                 deal_card(dealer_hand)
                 time.sleep(0.75)
                 print(f"The dealer's hand: {dealer_hand}")
                 time.sleep(0.75)
-                print(f"Your hand: {user_hand}")      
+                print(f"Your hand: {user_hand}")
+            if user_choice == "d":
+                current_bet = current_bet * 2
+                make_bet(current_bet)      
         except InvalidInputError:
             print("Invalid input")
           
