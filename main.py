@@ -79,7 +79,6 @@ def check_win(user_hand, dealer_hand):
     elif (total_value(dealer_hand) >= 17) and (total_value(user_hand) > total_value(dealer_hand)):
         print("You win!")
         return True
-    
 
 def check_loss(user_hand, dealer_hand):
     if total_value(dealer_hand) == 21:
@@ -115,14 +114,14 @@ def make_bet(new_bet):
         for row in bets:
             csv_writer.writerow(row)
 
-def update_running_total(current_amount):
+def update_running_total(running_total):
     bets = []
     with open('bets.csv', mode='r', newline='') as f:
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
             bets.append(row)   
     for row in bets:
-        row['Running Total'] = current_amount
+        row['Running Total'] = running_total
         break
     with open('bets.csv', mode='w', newline='') as f:
         fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
@@ -130,6 +129,17 @@ def update_running_total(current_amount):
         csv_writer.writeheader()
         for row in bets:
             csv_writer.writerow(row)
+
+def get_running_total():
+    bets = []
+    running_total = 0
+    with open('bets.csv', mode='r', newline='') as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            bets.append(row)   
+    for row in bets:
+        running_total = row['Running Total']
+        return running_total
 
 def hit():
     deal_card(user_hand)
@@ -149,6 +159,8 @@ def stand():
 
 def play_game():
     current_bet = 0
+    running_total = int(get_running_total())
+    print(f"Your running total is: {running_total}")
     current_bet = int(input("Input your bet amount: "))
     make_bet(current_bet)
     print("The dealer is dealing the cards...")
@@ -181,10 +193,17 @@ def play_game():
             print("Invalid input")
           
         if check_loss(user_hand, dealer_hand):
+             running_total = running_total - current_bet
+             update_running_total(running_total)
+             print(f"Your running total is: {running_total}")
              return
         if check_tie(user_hand, dealer_hand):
+             print(f"Your running total is: {running_total}")
              return
         if check_win(user_hand, dealer_hand):
+             running_total = running_total + current_bet * 2
+             update_running_total(running_total)
+             print(f"Your running total is: {running_total}")
              return
         
 
@@ -209,6 +228,8 @@ def start_prompt(greeting, text_insert):
 def main():
     greeting = "Welcome"
     text_insert = "a"
+    running_total = 0
+    update_running_total(running_total)
     try:
         while True:
             start_prompt(greeting, text_insert)
