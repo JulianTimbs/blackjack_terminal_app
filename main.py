@@ -189,7 +189,7 @@ def play_game():
             if user_choice == "s":
                 stand()
             if user_choice == "d":
-                current_bet = current_bet * 2
+                current_bet *= 2
                 make_bet(current_bet)  
                 hit()    
         except InvalidInputError:
@@ -231,20 +231,20 @@ def start_prompt(greeting, text_insert):
 def main():
     greeting = "Welcome"
     text_insert = "a"
-    running_total = 0
-    update_running_total(running_total)
-    try:
-        while True:
+    running_total = 0 
+    while True:
+        try:
+            get_running_total()
             start_prompt(greeting, text_insert)
             greeting = "Hi again"
             text_insert = "another"
             play_game()
             user_hand.clear()
             dealer_hand.clear()
-    except KeyboardInterrupt:
-        print("Thanks for playing, see you next time!")
-    except InvalidInputError:
-        print("Invalid input")
-        main()
+        except KeyboardInterrupt:
+            print("Thanks for playing, see you next time!")
+            break
+        except InvalidInputError:
+            print("Invalid input")
 
 main()
