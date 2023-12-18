@@ -109,7 +109,23 @@ def make_bet(new_bet):
         row['Current Bet'] = new_bet
         break
     with open('bets.csv', mode='w', newline='') as f:
-        fieldnames = ['Current Bet', 'Highest Winnings']
+        fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
+        csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for row in bets:
+            csv_writer.writerow(row)
+
+def update_running_total(current_amount):
+    bets = []
+    with open('bets.csv', mode='r', newline='') as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            bets.append(row)   
+    for row in bets:
+        row['Running Total'] = current_amount
+        break
+    with open('bets.csv', mode='w', newline='') as f:
+        fieldnames = ['Current Bet', 'Running Total','Highest Winnings']
         csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
         csv_writer.writeheader()
         for row in bets:
