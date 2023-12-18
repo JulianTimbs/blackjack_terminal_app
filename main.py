@@ -23,6 +23,7 @@ card_value = {
 
 user_hand = []
 dealer_hand = []
+current_bet = 0
 
 def deal_card(hand):
     card = random.choice(list(card_value.values()))
@@ -99,7 +100,29 @@ def check_tie(user_hand, dealer_hand):
             print("It's a push!")
             return True
 
+def make_bet(new_bet):
+    bets = []
+    with open('bets.csv', mode='r', newline='') as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            bets.append(row)
+    
+    for row in bets:
+        row['Current Bet'] = new_bet
+        break
+
+    with open('bets.csv', mode='w', newline='') as f:
+        fieldnames = ['Current Bet', 'Highest Winnings']
+        csv_writer = csv.DictWriter(f, fieldnames=fieldnames)
+
+        csv_writer.writeheader()
+        for row in bets:
+            csv_writer.writerow(row)
+
 def play_game():
+    current_bet = input("Input your bet amount: ")
+    make_bet(current_bet)
+    print(f"Your current bet is: {current_bet}")
     print("The dealer is dealing the cards...")
     time.sleep(0.75)
     while len(user_hand) < 2:
@@ -111,7 +134,8 @@ def play_game():
     if check_win(user_hand, dealer_hand):
              return
     while True:
-        try:  
+        try:
+            print(f"Your current bet is: {current_bet}")  
             user_choice = input("Enter 'h' to hit or 's' to stand: ").lower()
             if user_choice not in ("h", "s", "\\quit"):
                 raise InvalidInputError
