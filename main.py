@@ -220,7 +220,7 @@ def play_game():
     time.sleep(0.75)
     print(f"Your hand: {user_hand}")
     if check_win(user_hand, dealer_hand):
-        running_total = running_total + current_bet * 2.5
+        running_total = running_total + (current_bet * 1.5) + current_bet
         update_running_total(running_total)
         print(f"Your running total is: {running_total}")
         return
