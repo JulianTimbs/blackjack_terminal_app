@@ -101,7 +101,7 @@ def check_tie(user_hand, dealer_hand):
 def get_bet():
     while True:
         try:
-            user_bet = input("Input your bet amount: ")
+            user_bet = input("Input your bet amount: $")
             if user_bet == "\\quit":
                 raise KeyboardInterrupt
             user_bet = int(user_bet) # So user can still quit during bet prompt
@@ -208,7 +208,7 @@ def stand():
 def play_game():
     current_bet = 0
     running_total = int(get_running_total())
-    print(f"Your running total is: {running_total}")
+    print(f"Your running total is: ${running_total}")
     current_bet = get_bet()
     make_bet(current_bet)
     print("The dealer is dealing the cards...")
@@ -226,7 +226,7 @@ def play_game():
         return
     while True:
         try:
-            print(f"Your current bet is: {current_bet}")  
+            print(f"Your current bet is: ${current_bet}")  
             user_choice = input("Enter 'h' to hit or 's' to stand or 'd' to double down: ").lower()
             if user_choice not in ("h", "s", "d", "\\quit"):
                 raise InvalidInputError
@@ -246,15 +246,15 @@ def play_game():
         if check_loss(user_hand, dealer_hand):
              running_total = running_total - current_bet
              update_running_total(running_total)
-             print(f"Your running total is: {running_total}")
+             print(f"Your running total is: ${running_total}")
              return
         if check_tie(user_hand, dealer_hand):
-             print(f"Your running total is: {running_total}")
+             print(f"Your running total is: ${running_total}")
              return
         if check_win(user_hand, dealer_hand):
              running_total = running_total + current_bet * 2
              update_running_total(running_total)
-             print(f"Your running total is: {running_total}")
+             print(f"Your running total is: ${running_total}")
              return
         
 
@@ -295,11 +295,11 @@ def main():
             running_total = int(get_running_total())
             if running_total > highest_winnings:
                 update_highest_winnings(running_total)
-                print(f"New highest win! {running_total}")
+                print(f"New highest win! ${running_total}")
                 print("Thanks for playing, see you next time!")
                 break
             else:
-                print(f"Your highest winnings is: {highest_winnings}")
+                print(f"Your highest winnings is: ${highest_winnings}")
                 print("Thanks for playing, see you next time!")
                 break
         except InvalidInputError:
