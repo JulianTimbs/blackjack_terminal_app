@@ -124,6 +124,13 @@ def hit():
     time.sleep(0.75)
     print(f"Your hand: {user_hand}")
 
+def stand():
+    deal_card(dealer_hand)
+    time.sleep(0.75)
+    print(f"The dealer's hand: {dealer_hand}")
+    time.sleep(0.75)
+    print(f"Your hand: {user_hand}")
+
 def play_game():
     current_bet = 0
     current_bet = int(input("Input your bet amount: "))
@@ -149,14 +156,11 @@ def play_game():
             if user_choice == "h":
                 hit()
             if user_choice == "s":
-                deal_card(dealer_hand)
-                time.sleep(0.75)
-                print(f"The dealer's hand: {dealer_hand}")
-                time.sleep(0.75)
-                print(f"Your hand: {user_hand}")
+                stand()
             if user_choice == "d":
                 current_bet = current_bet * 2
-                make_bet(current_bet)      
+                make_bet(current_bet)  
+                hit()    
         except InvalidInputError:
             print("Invalid input")
           
@@ -165,7 +169,7 @@ def play_game():
         if check_tie(user_hand, dealer_hand):
              return
         if check_win(user_hand, dealer_hand):
-             return  
+             return
         
 
 
