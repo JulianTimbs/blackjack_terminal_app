@@ -1,10 +1,9 @@
 from errors import InvalidInputError, KeyboardInterrupt
 from card_functions import deal_card, hit, stand, user_hand, dealer_hand
 from game_state_functions import check_win, check_loss, check_tie
-from bet_functions import get_bet, make_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings
+from bet_functions import get_bet, make_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings, check_bets_file
 from help import help
 import time
-from colored import Fore, Back, Style
 
 
 def play_game():
@@ -12,8 +11,6 @@ def play_game():
     running_total = int(get_running_total())
     print(f"Your running total is: ${running_total}")
     current_bet = get_bet()
-    if current_bet == "\\quit":
-        raise KeyboardInterrupt
     make_bet(current_bet)
     print("The dealer is dealing the cards...")
     time.sleep(0.75)
@@ -73,13 +70,14 @@ def get_input(prompt):
     
 
 def start_prompt(greeting, text_insert):
-    welcome = get_input(f"{Fore.black}{Back.white}{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules and terminology:{Style.reset} ")
+    welcome = get_input(f"{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules and terminology: ")
 
 def main():
     game_played = False
     greeting = "Welcome"
     text_insert = "a"
-    running_total = 0 
+    running_total = 0
+    check_bets_file() 
     update_running_total(running_total)
     while True:
         try:
