@@ -3,7 +3,6 @@ from card_functions import deal_card, hit, stand, user_hand, dealer_hand
 from game_state_functions import check_win, check_loss, check_tie
 from bet_functions import get_bet, make_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings
 from help import help
-import sys
 import time
 
 def play_game():
