@@ -1,5 +1,4 @@
 import csv
-from errors import InvalidInputError
 
 def get_bet():
     while True:
@@ -13,8 +12,9 @@ def get_bet():
             break
         except ValueError:
             print("Bet must be a positive number")
-        except InvalidInputError:
-            print("Invalid input")
+        except KeyboardInterrupt:
+            print("Ok, see you next time!")
+            exit()
     return user_bet      
 
 def make_bet(new_bet):
