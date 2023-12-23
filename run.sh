@@ -19,6 +19,7 @@ check_venv(){
 if command -v python3 &> /dev/null
 then
     check_venv
+    pip3 install colored &> /dev/null
     python3 main.py
 else
     echo "Python must be install to execute this app."
