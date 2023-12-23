@@ -109,4 +109,4 @@ def main():
         except InvalidInputError:
             print(f"{style_invalid}Invalid input{Style.reset}")
 
-main()
+play_game()
