@@ -1,5 +1,8 @@
 import random
 import time
+from colored import Style
+from styles import style_dealerhand, style_userhand, style_announcement
+
 
 card_value = {
     'Ace': 11,
@@ -66,15 +69,15 @@ def check_card_available(card):
 def hit():
     deal_card(user_hand)
     deal_card(dealer_hand)
-    print("The dealer is dealing the cards...")
+    print(f"{style_announcement}The dealer is dealing the cards...{Style.reset}")
     time.sleep(0.75)
-    print(f"The dealer's hand: {dealer_hand}")
+    print(f"{style_dealerhand}The dealer's hand: {dealer_hand}{Style.reset}")
     time.sleep(0.75)
-    print(f"Your hand: {user_hand}")
+    print(f"{style_userhand}Your hand: {user_hand}{Style.reset}")
 
 def stand():
     deal_card(dealer_hand)
     time.sleep(0.75)
-    print(f"The dealer's hand: {dealer_hand}")
+    print(f"{style_dealerhand}The dealer's hand: {dealer_hand}{Style.reset}")
     time.sleep(0.75)
-    print(f"Your hand: {user_hand}")
+    print(f"{style_userhand}Your hand: {user_hand}{Style.reset}")

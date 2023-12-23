@@ -1,11 +1,13 @@
 import csv
+from colored import Style
+from styles import style_invalid, style_bet, style_announcement
 
 bets = []
 
 def get_bet():
     while True:
         try:
-            user_bet = input("Input your bet amount: $")
+            user_bet = input(f"{style_bet}Input your bet amount: $")
             if user_bet == "\\quit":
                 raise KeyboardInterrupt
             user_bet = int(user_bet) # So user can still quit during bet prompt
@@ -13,9 +15,9 @@ def get_bet():
                 raise ValueError        
             break
         except ValueError:
-            print("Bet must be a positive number")
+            print(f"{style_invalid}Bet must be a positive number{Style.reset}")
         except KeyboardInterrupt:
-            print("Ok, see you next time!")
+            print(f"{style_announcement}Ok, see you next time!{Style.reset}")
             exit()
     return user_bet      
 

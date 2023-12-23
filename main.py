@@ -3,33 +3,35 @@ from card_functions import deal_card, hit, stand, user_hand, dealer_hand
 from game_state_functions import check_win, check_loss, check_tie
 from bet_functions import get_bet, make_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings, check_bets_file
 from help import help
+from styles import style_highscore, style_announcement, style_dealerhand, style_userhand, style_invalid, style_bet, style_runningtotal
+from colored import Style
 import time
 
 
 def play_game():
     current_bet = 0
     running_total = int(get_running_total())
-    print(f"Your running total is: ${running_total}")
+    print(f"{style_announcement}Your running total is: ${running_total}{Style.reset}")
     current_bet = get_bet()
     make_bet(current_bet)
-    print("The dealer is dealing the cards...")
+    print(f"{style_announcement}The dealer is dealing the cards...{Style.reset}")
     time.sleep(0.75)
     while len(user_hand) < 2:
         deal_card(user_hand)
     deal_card(dealer_hand)
-    print(f"The dealer's hand: {dealer_hand}")
+    print(f"{style_dealerhand}The dealer's hand: {dealer_hand}{Style.reset}")
     time.sleep(0.75)
-    print(f"Your hand: {user_hand}")
+    print(f"{style_userhand}Your hand: {user_hand}{Style.reset}")
     if check_win(user_hand, dealer_hand):
         running_total = running_total + (current_bet * 1.5) + current_bet
         running_total = int(running_total)
         update_running_total(running_total)
-        print(f"Your running total is: ${running_total}")
+        print(f"{style_announcement}Your running total is: ${running_total}{Style.reset}")
         return
     while True:
         try:
-            print(f"Your current bet is: ${current_bet}")  
-            user_choice = input("Enter 'h' to hit or 's' to stand or 'd' to double down: ").lower()
+            print(f"{style_bet}Your current bet is: ${current_bet}")  
+            user_choice = input(f"{style_announcement}Enter 'h' to hit or 's' to stand or 'd' to double down: {Style.reset}").lower()
             if user_choice not in ("h", "s", "d", "\\quit"):
                 raise InvalidInputError
             if user_choice == '\\quit':
@@ -43,19 +45,19 @@ def play_game():
                 make_bet(current_bet)  
                 hit()    
         except InvalidInputError:
-            print("Invalid input") 
+            print(f"{style_invalid}Invalid input{Style.reset}") 
         if check_loss(user_hand, dealer_hand):
              running_total = running_total - current_bet
              update_running_total(running_total)
-             print(f"Your running total is: ${running_total}")
+             print(f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
              return
         if check_tie(user_hand, dealer_hand):
-             print(f"Your running total is: ${running_total}")
+             print(f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
              return
         if check_win(user_hand, dealer_hand):
              running_total = running_total + current_bet * 2
              update_running_total(running_total)
-             print(f"Your running total is: ${running_total}")
+             print(f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
              return       
 
 def get_input(prompt):
@@ -70,7 +72,7 @@ def get_input(prompt):
     
 
 def start_prompt(greeting, text_insert):
-    welcome = get_input(f"{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules and terminology: ")
+    welcome = get_input(f"{style_announcement}{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules and terminology: {Style.reset}")
 
 def main():
     game_played = False
@@ -95,16 +97,16 @@ def main():
                 running_total = int(get_running_total())
                 if running_total > highest_winnings:
                     update_highest_winnings(running_total)
-                    print(f"New highest win! ${running_total}")
+                    print(f"{style_highscore}New highest win! ${running_total}{Style.reset}")
                     break
                 else:
-                    print(f"Your highest winnings is: ${highest_winnings}")
-                print("Thanks for playing, see you next time!")
+                    print(f"{style_announcement}Your highest winnings is: ${highest_winnings}{Style.reset}")
+                print(f"{style_announcement}Thanks for playing, see you next time!{Style.reset}")
                 break
             else:
-                print("Ok, see you next time!")
+                print(f"{style_announcement}Ok, see you next time!{Style.reset}")
                 break
         except InvalidInputError:
-            print("Invalid input")
+            print(f"{style_invalid}Invalid input{Style.reset}")
 
 main()
