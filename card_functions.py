@@ -44,14 +44,9 @@ def deal_card(hand):
 def total_value(hand):
     i = 0
     total = 0
-    if hand == user_hand:
-        for i in user_hand:
-            total += i
-        return total
-    if hand == dealer_hand:
-        for i in dealer_hand:
-            total += i
-        return total
+    for i in hand:
+        total += i
+    return total
 
 def check_card_available(card):
     total = 0
