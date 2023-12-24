@@ -40,7 +40,7 @@ def play_game():
                 stand()
             if user_choice == "d":
                 current_bet *= 2
-                make_bet(current_bet)
+                update_current_bet(current_bet)
                 hit()
         except InvalidInputError:
             print(f"{style_invalid}Invalid input{Style.reset}")
