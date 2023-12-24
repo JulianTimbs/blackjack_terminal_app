@@ -1,7 +1,7 @@
 from errors import InvalidInputError, KeyboardInterrupt
 from card_functions import deal_card, hit, stand, user_hand, dealer_hand
 from game_state_functions import check_win, check_loss, check_tie
-from bet_functions import get_bet, make_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings, check_bets_file
+from bet_functions import get_bet, update_current_bet, update_running_total, get_running_total, update_highest_winnings, get_highest_winnings, check_bets_file
 from help import help
 from styles import style_highscore, style_announcement, style_dealerhand, style_userhand, style_invalid, style_bet, style_runningtotal
 from colored import Style
@@ -12,7 +12,7 @@ def play_game():
     current_bet = 0
     running_total = int(get_running_total())
     current_bet = get_bet()
-    make_bet(current_bet)
+    update_current_bet(current_bet)
     print(f"{style_announcement}The dealer is dealing the cards...{Style.reset}")
     time.sleep(0.75)
     while len(user_hand) < 2:

@@ -51,7 +51,7 @@ def write_to_bets_file():
             csv_writer.writerow(row)
 
 
-def make_bet(current_bet):
+def update_current_bet(current_bet):
     read_bets_file()
     for row in bets:
         row['Current Bet'] = current_bet
