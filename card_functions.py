@@ -29,18 +29,16 @@ def deal_card(hand):
     card = random.choice(list(card_value.values()))
     if card == 11 and total_value(hand) >= 11:
         card = 1
-    if hand == user_hand:
-        if check_card_available(card):
+    if check_card_available(card):
+        if hand == user_hand:
             user_hand.append(card)
-        else:
-            deal_card(user_hand)
-    if hand == dealer_hand:
-        if total_value(dealer_hand) < 17:
-            if check_card_available:
+            return hand
+        if hand == dealer_hand:
+            if total_value(dealer_hand) < 17:
                 dealer_hand.append(card)
-            else:
-                deal_card(dealer_hand)
-    return hand
+                return hand
+    else:
+        deal_card(hand)
 
 
 def total_value(hand):
