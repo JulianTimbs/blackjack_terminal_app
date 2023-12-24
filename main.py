@@ -23,7 +23,6 @@ def play_game():
     print(f"{style_userhand}Your hand: {user_hand}{Style.reset}")
     if check_win(user_hand, dealer_hand):
         running_total = running_total + (current_bet * 1.5) + current_bet
-        running_total = int(running_total)
         update_running_total(running_total)
         return
     while True:
