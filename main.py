@@ -70,11 +70,7 @@ def get_input(prompt):
 
 def start_prompt(greeting, text_insert):
     welcome = get_input(
-        f"""
-        {style_announcement}{greeting}! Enter 'play' to start {text_insert} game 
-        of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules 
-        and terminology: {Style.reset}
-        """)
+        f"{style_announcement}{greeting}! Enter 'play' to start {text_insert} game of Blackjack or '\\quit' at anytime to quit the game or 'help' to see rules and terminology: {Style.reset}")
 
 
 def main():

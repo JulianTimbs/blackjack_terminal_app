@@ -1,6 +1,6 @@
 import csv
 from colored import Style
-from styles import style_invalid, style_bet, style_announcement
+from styles import style_invalid, style_bet, style_announcement, style_highscore
 
 bets = []
 
@@ -19,15 +19,25 @@ def get_bet():
         except ValueError:
             print(f"{style_invalid}Bet must be a positive number{Style.reset}")
         except KeyboardInterrupt:
+            highest_winnings = int(get_highest_winnings())
+            running_total = int(get_running_total())
+            if running_total > highest_winnings:
+                update_highest_winnings(running_total)
+                print(
+                    f"{style_highscore}New highest win! ${running_total}{Style.reset}")
+                exit()
+            else:
+                print(
+                    f"{style_announcement}Your highest winnings is: ${highest_winnings}{Style.reset}")
             print(f"{style_announcement}Ok, see you next time!{Style.reset}")
             exit()
     return user_bet
 
 
 def read_bets_file():
+    bets.clear()
     with open('bets.csv', mode='r', newline='') as f:
         csv_reader = csv.DictReader(f)
-        bets.clear()
         for row in csv_reader:
             bets.append(row)
 
