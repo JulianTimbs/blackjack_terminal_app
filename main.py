@@ -11,7 +11,6 @@ import time
 def play_game():
     current_bet = 0
     running_total = int(get_running_total())
-    print(f"{style_announcement}Your running total is: ${running_total}{Style.reset}")
     current_bet = get_bet()
     make_bet(current_bet)
     print(f"{style_announcement}The dealer is dealing the cards...{Style.reset}")
@@ -26,8 +25,6 @@ def play_game():
         running_total = running_total + (current_bet * 1.5) + current_bet
         running_total = int(running_total)
         update_running_total(running_total)
-        print(
-            f"{style_announcement}Your running total is: ${running_total}{Style.reset}")
         return
     while True:
         try:
@@ -51,18 +48,12 @@ def play_game():
         if check_loss(user_hand, dealer_hand):
             running_total = running_total - current_bet
             update_running_total(running_total)
-            print(
-                f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
             return
         if check_tie(user_hand, dealer_hand):
-            print(
-                f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
             return
         if check_win(user_hand, dealer_hand):
             running_total = running_total + current_bet * 2
             update_running_total(running_total)
-            print(
-                f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
             return
 
 
@@ -91,12 +82,14 @@ def main():
     update_running_total(running_total)
     while True:
         try:
-            get_running_total()
             start_prompt(greeting, text_insert)
             game_played = True
             greeting = "Hi again"
             text_insert = "another"
             play_game()
+            running_total = get_running_total()
+            print(
+                f"{style_runningtotal}Your running total is: ${running_total}{Style.reset}")
             user_hand.clear()
             dealer_hand.clear()
         except KeyboardInterrupt:
